@@ -44,7 +44,6 @@ set signcolumn=yes
 " Remaps
 map <leader>a ggVG
 map <leader>ut :UndotreeToggle<CR>
-nnoremap <leader>v <cmd>CHADopen<CR>
 nnoremap <leader>l <cmd>call setqflist([])<CR>
 nnoremap <silent> <leader>gg :LazyGit<CR>
 nnoremap <leader>z <cmd>TZAtaraxis<CR>
