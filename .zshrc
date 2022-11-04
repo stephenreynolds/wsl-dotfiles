@@ -65,7 +65,7 @@ ENABLE_CORRECTION="true"
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
 export FZF_DEFAULT_OPTS="--extended"
-export FZF_DEFAULT_COMMAND="ag --ignore .git -g ''"
+export FZF_DEFAULT_COMMAND="ag --ignore .git --ignore node_modules -g ''"
 
 # Plugins
 plugins=(git sudo colored-man-pages fzf zsh-syntax-highlighting nvm npm node ubuntu)
@@ -75,7 +75,7 @@ source $ZSH/oh-my-zsh.sh
 # User configuration
 export MANPATH="/usr/local/man:$MANPATH"
 export LANG=en_US.UTF-8
-export EDITOR="nvim"
+export EDITOR="lvim"
 export ARCHFLAGS="-arch x86_64"
 export BROWSER="/mnt/c/Users/Stephen/browser.exe"
 
@@ -84,7 +84,7 @@ export GCM_CREDENTIAL_STORE=secretservice
 # Aliases
 
 alias dots="git --git-dir $HOME/.dotfiles --work-tree=$HOME"
-alias vim="nvim"
+alias vim="lvim"
 alias e="$EDITOR"
 
 # zoxide
