@@ -194,3 +194,4 @@ lvim.plugins = {
 -- })
 
 lvim.transparent_window = true
+vim.opt.relativenumber = true
