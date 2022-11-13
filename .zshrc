@@ -1,4 +1,9 @@
-export PATH=$HOME/.config/scripts:$HOME/.local/bin:$HOME/bin:/usr/local/bin:$PATH
+autoload -U compinit promptinit
+compinit
+promptinit; prompt gentoo
+zstyle ':completion::complete:*' use-cache 1
+
+export PATH=$HOME/.config/scripts:$HOME/.local/bin:$HOME/bin:/usr/local/bin:$PATH:/mnt/c/Windows/system32:/mnt/c/Windows:/mnt/c/Windows/System32/Wbem:/mnt/c/Users/Stephen/AppData/Local/Microsoft/WindowsApps
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
@@ -93,3 +98,7 @@ eval "$(zoxide init zsh)"
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+LS_COLORS=$LS_COLORS:'ow=1;34:' ; export LS_COLORS
+
+[ -f "/home/stephen/.ghcup/env" ] && source "/home/stephen/.ghcup/env" # ghcup-env
