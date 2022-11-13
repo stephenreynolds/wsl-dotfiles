@@ -1,26 +1,24 @@
 # WSL dotfiles
 
 ```
-            .-/+oossssoo+/-.               stephen@DESKTOP-5DNR616
-        `:+ssssssssssssssssss+:`           -----------------------
-      -+ssssssssssssssssssyyssss+-         OS: Ubuntu 22.04.1 LTS on Windows 10 x86_64
-    .ossssssssssssssssssdMMMNysssso.       Kernel: 5.10.16.3-microsoft-standard-WSL2
-   /ssssssssssshdmmNNmmyNMMMMhssssss/      Uptime: 12 hours, 13 mins
-  +ssssssssshmydMMMMMMMNddddyssssssss+     Packages: 561 (dpkg)
- /sssssssshNMMMyhhyyyyhmNMMMNhssssssss/    Shell: zsh 5.8.1
-.ssssssssdMMMNhsssssssssshNMMMdssssssss.   Terminal: Windows Terminal
-+sssshhhyNMMNyssssssssssssyNMMMysssssss+   CPU: Intel i7-7700K (8) @ 4.199GHz
-ossyNMMMNyMMhsssssssssssssshmmmhssssssso   GPU: c88e:00:00.0 Microsoft Corporation Device 008e
-ossyNMMMNyMMhsssssssssssssshmmmhssssssso   Memory: 148MiB / 15974MiB
-+sssshhhyNMMNyssssssssssssyNMMMysssssss+
-.ssssssssdMMMNhsssssssssshNMMMdssssssss.
- /sssssssshNMMMyhhyyyyhdNMMMNhssssssss/
-  +sssssssssdmydMMMMMMMMddddyssssssss+
-   /ssssssssssshdmNNNNmyNMMMMhssssss/
-    .ossssssssssssssssssdMMMNysssso.
-      -+sssssssssssssssssyyyssss+-
-        `:+ssssssssssssssssss+:`
-            .-/+oossssoo+/-.
+         -/oyddmdhs+:.                stephen@Stephen-PC
+     -odNMMMMMMMMNNmhy+-`             ------------------
+   -yNMMMMMMMMMMMNNNmmdhy+-           OS: Gentoo Linux on Windows 10 x86_64
+ `omMMMMMMMMMMMMNmdmmmmddhhy/`        Kernel: 5.15.68.1-microsoft-standard-WSL2
+ omMMMMMMMMMMMNhhyyyohmdddhhhdo`      Uptime: 6 hours, 58 mins
+.ydMMMMMMMMMMdhs++so/smdddhhhhdm+`    Packages: 338 (emerge)
+ oyhdmNMMMMMMMNdyooydmddddhhhhyhNd.   Shell: zsh 5.9
+  :oyhhdNNMMMMMMMNNNmmdddhhhhhyymMh   Terminal: Windows Terminal
+    .:+sydNMMMMMNNNmmmdddhhhhhhmMmy   CPU: Intel i7-7700K (8) @ 4.199GHz
+       /mMMMMMMNNNmmmdddhhhhhmMNhs:   Memory: 403MiB / 15963MiB
+    `oNMMMMMMMNNNmmmddddhhdmMNhs+`
+  `sNMMMMMMMMNNNmmmdddddmNMmhs/.
+ /NMMMMMMMMNNNNmmmdddmNMNdso:`
++MMMMMMMNNNNNmmmmdmNMNdso/-
+yMMNNNNNNNmmmmmNNMmhs+/-`
+/hMMNNNNNNNNMNdhs++/-`
+`/ohdmmddhys+++/:.`
+  `-//////:--.
 ```
 
 ## Install on a new system
