@@ -60,7 +60,6 @@ lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
 --   w = { "<cmd>Trouble workspace_diagnostics<cr>", "Workspace Diagnostics" },
 -- }
 
--- TODO: User Config for predefined plugins
 -- After changing plugin config exit and reopen LunarVim, Run :PackerInstall :PackerCompile
 lvim.builtin.alpha.active = true
 lvim.builtin.alpha.mode = "dashboard"
@@ -161,22 +160,36 @@ lvim.builtin.treesitter.highlight.enable = true
 --     filetypes = { "javascript", "python" },
 --   },
 -- }
-
+-- TODO: wat
 -- Additional Plugins
 lvim.plugins = {
   { "rebelot/kanagawa.nvim" },
-  { "ellisonleao/gruvbox.nvim" },
-  {
-    "catppuccin/nvim",
-    as = "catppuccin",
+  { "norcalli/nvim-colorizer.lua",
     config = function()
-      require("catppuccin").setup {
-        flavour = "macchiato" -- mocha, macchiato, frappe, latte
-      }
-      vim.api.nvim_command "colorscheme catppuccin"
+      require("colorizer").setup({ "css", "scss", "html", "javascript", "lua" }, {
+        RGB = true, -- #RGB hex codes
+        RRGGBB = true, -- #RRGGBB hex codes
+        RRGGBBAA = true, -- #RRGGBBAA hex codes
+        rgb_fn = true, -- CSS rgb() and rgba() functions
+        hsl_fn = true, -- CSS hsl() and hsla() functions
+        css = true, -- Enable all CSS features: rgb_fn, hsl_fn, names, RGB, RRGGBB
+        css_fn = true -- Enable all CSS *functions*: rgb_fn, hsl_fn
+      })
     end
   },
-  { 'projekt0n/github-nvim-theme' },
+  { "folke/trouble.nvim",
+    cmd = "TroubleToggle",
+  },
+  { "folke/todo-comments.nvim",
+    requires = "nvim-lua/plenary.nvim",
+    config = function()
+      require("todo-comments").setup {
+        -- your configuration comes here
+        -- or leave it empty to use the default settings
+        -- refer to the configuration section below
+      }
+    end
+  }
 }
 
 -- Autocommands (https://neovim.io/doc/user/autocmd.html)
@@ -195,3 +208,27 @@ lvim.plugins = {
 
 lvim.transparent_window = true
 vim.opt.relativenumber = true
+
+lvim.builtin.which_key.mappings["t"] = {
+  name = "Diagnostics",
+  t = { "<cmd>TroubleToggle<cr>", "trouble" },
+  w = { "<cmd>TroubleToggle workspace_diagnostics<cr>", "workspace" },
+  d = { "<cmd>TroubleToggle document_diagnostics<cr>", "document" },
+  q = { "<cmd>TroubleToggle quickfix<cr>", "quickfix" },
+  l = { "<cmd>TroubleToggle loclist<cr>", "loclist" },
+  r = { "<cmd>TroubleToggle lsp_references<cr>", "references" },
+}
+
+local util = require("lspconfig/util")
+require("lspconfig").hls.setup {
+  root_dir = function(filepath)
+    return 
+        util.root_pattern('hie.yaml', 'stack.yaml', 'cabal.project', "*.cabal", "package.yaml")(filepath)
+            or util.path.dirname(filepath)
+  end
+}
+
+-- Tab size
+vim.bo.tabstop = 4
+vim.bo.shiftwidth = 4
+vim.bo.softtabstop = 4
