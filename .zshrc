@@ -3,7 +3,7 @@ compinit
 promptinit; prompt gentoo
 zstyle ':completion::complete:*' use-cache 1
 
-export PATH=$HOME/.config/scripts:$HOME/.local/bin:$HOME/bin:/usr/local/bin:$PATH:/mnt/c/Windows/system32:/mnt/c/Windows:/mnt/c/Windows/System32/Wbem:/mnt/c/Users/Stephen/AppData/Local/Microsoft/WindowsApps
+export PATH=$HOME/.config/scripts:$HOME/.local/bin:$HOME/bin:/usr/local/bin:$HOME/.cargo/bin:$PATH:/mnt/c/Windows/system32:/mnt/c/Windows:/mnt/c/Windows/System32/Wbem:/mnt/c/Users/Stephen/AppData/Local/Microsoft/WindowsApps
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
