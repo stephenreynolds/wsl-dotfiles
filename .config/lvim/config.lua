@@ -1,4 +1,4 @@
---[[
+--[[mai
 lvim is the global options object
 
 Linters should be
@@ -69,22 +69,24 @@ lvim.builtin.nvimtree.setup.renderer.icons.show.git = false
 
 -- if you don't want all the parsers change this to a table of the ones you want
 lvim.builtin.treesitter.ensure_installed = {
-  "bash",
-  "c",
-  "javascript",
-  "json",
-  "lua",
-  "python",
-  "typescript",
-  "tsx",
-  "css",
-  "rust",
-  "java",
-  "yaml",
+    "bash",
+    "c",
+    "javascript",
+    "json",
+    "lua",
+    "python",
+    "typescript",
+    "tsx",
+    "css",
+    "rust",
+    "java",
+    "yaml",
+    "toml"
 }
 
 lvim.builtin.treesitter.ignore_install = { "haskell" }
 lvim.builtin.treesitter.highlight.enable = true
+lvim.builtin.dap.active = true
 
 -- generic LSP settings
 
@@ -107,7 +109,7 @@ lvim.builtin.treesitter.highlight.enable = true
 
 -- ---configure a server manually. !!Requires `:LvimCacheReset` to take effect!!
 -- ---see the full default list `:lua print(vim.inspect(lvim.lsp.automatic_configuration.skipped_servers))`
--- vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers, { "pyright" })
+vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers, { "rust_analyzer" })
 -- local opts = {} -- check the lspconfig documentation for a list of all possible options
 -- require("lvim.lsp.manager").setup("pyright", opts)
 
@@ -142,7 +144,20 @@ lvim.builtin.treesitter.highlight.enable = true
 --     filetypes = { "typescript", "typescriptreact" },
 --   },
 -- }
+local formatters = require("lvim.lsp.null-ls.formatters")
+formatters.setup {
+    { command = "stylua", filetypes = { "lua" } }
+}
 
+local mason_path = vim.fn.glob(vim.fn.stdpath("data") .. "/mason")
+local codelldb_adapter = {
+    type = "server",
+    port = "${port}",
+    executable = {
+        command = mason_path .. "bin/codelldb",
+        args = { "--port", "${port}" }
+    }
+}
 -- -- set additional linters
 -- local linters = require "lvim.lsp.null-ls.linters"
 -- linters.setup {
@@ -163,33 +178,54 @@ lvim.builtin.treesitter.highlight.enable = true
 -- TODO: wat
 -- Additional Plugins
 lvim.plugins = {
-  { "rebelot/kanagawa.nvim" },
-  { "norcalli/nvim-colorizer.lua",
-    config = function()
-      require("colorizer").setup({ "css", "scss", "html", "javascript", "lua" }, {
-        RGB = true, -- #RGB hex codes
-        RRGGBB = true, -- #RRGGBB hex codes
-        RRGGBBAA = true, -- #RRGGBBAA hex codes
-        rgb_fn = true, -- CSS rgb() and rgba() functions
-        hsl_fn = true, -- CSS hsl() and hsla() functions
-        css = true, -- Enable all CSS features: rgb_fn, hsl_fn, names, RGB, RRGGBB
-        css_fn = true -- Enable all CSS *functions*: rgb_fn, hsl_fn
-      })
-    end
-  },
-  { "folke/trouble.nvim",
-    cmd = "TroubleToggle",
-  },
-  { "folke/todo-comments.nvim",
-    requires = "nvim-lua/plenary.nvim",
-    config = function()
-      require("todo-comments").setup {
-        -- your configuration comes here
-        -- or leave it empty to use the default settings
-        -- refer to the configuration section below
-      }
-    end
-  }
+    { "rebelot/kanagawa.nvim" },
+    { "ray-x/lsp_signature.nvim" },
+    { "norcalli/nvim-colorizer.lua",
+        config = function()
+            require("colorizer").setup({ "css", "scss", "html", "javascript", "lua" }, {
+                RGB = true, -- #RGB hex codes
+                RRGGBB = true, -- #RRGGBB hex codes
+                RRGGBBAA = true, -- #RRGGBBAA hex codes
+                rgb_fn = true, -- CSS rgb() and rgba() functions
+                hsl_fn = true, -- CSS hsl() and hsla() functions
+                css = true, -- Enable all CSS features: rgb_fn, hsl_fn, names, RGB, RRGGBB
+                css_fn = true -- Enable all CSS *functions*: rgb_fn, hsl_fn
+            })
+        end
+    },
+    { "folke/trouble.nvim",
+        cmd = "TroubleToggle",
+    },
+    { "folke/todo-comments.nvim",
+        requires = "nvim-lua/plenary.nvim",
+        config = function()
+            require("todo-comments").setup {
+                -- your configuration comes here
+                -- or leave it empty to use the default settings
+                -- refer to the configuration section below
+            }
+        end
+    },
+    "simrat39/rust-tools.nvim",
+    {
+        "saecki/crates.nvim",
+        tag = "v0.3.0",
+        requires = { "nvim-lua/plenary.nvim" },
+        config = function()
+            require("crates").setup {
+                null_ls = {
+                    enabled = true,
+                    name = "crates.nvim",
+                },
+            }
+        end,
+    },
+    {
+        "j-hui/fidget.nvim",
+        config = function()
+            require("fidget").setup()
+        end,
+    }
 }
 
 -- Autocommands (https://neovim.io/doc/user/autocmd.html)
@@ -206,29 +242,124 @@ lvim.plugins = {
 --   end,
 -- })
 
+pcall(function()
+    require("rust-tools").setup {
+        tools = {
+            executor = require("rust-tools/executors").termopen, -- can be quickfix or termopen
+            reload_workspace_from_cargo_toml = true,
+            runnables = {
+                use_telescope = true,
+            },
+            inlay_hints = {
+                auto = true,
+                only_current_line = false,
+                show_parameter_hints = false,
+                parameter_hints_prefix = "<-",
+                other_hints_prefix = "=>",
+                max_len_align = false,
+                max_len_align_padding = 1,
+                right_align = false,
+                right_align_padding = 7,
+                highlight = "Comment",
+            },
+            hover_actions = {
+                border = "rounded",
+            },
+            on_initialized = function()
+                vim.api.nvim_create_autocmd({ "BufWritePost", "BufEnter", "CursorHold", "InsertLeave" }, {
+                    pattern = { "*.rs" },
+                    callback = function()
+                        local _, _ = pcall(vim.lsp.codelens.refresh)
+                    end,
+                })
+            end,
+        },
+        dap = {
+            adapter = codelldb_adapter,
+        },
+        server = {
+            on_attach = function(client, bufnr)
+                require("lvim.lsp").common_on_attach(client, bufnr)
+                local rt = require "rust-tools"
+                vim.keymap.set("n", "K", rt.hover_actions.hover_actions, { buffer = bufnr })
+            end,
+
+            capabilities = require("lvim.lsp").common_capabilities(),
+            settings = {
+                ["rust-analyzer"] = {
+                    lens = {
+                        enable = true,
+                    },
+                    checkOnSave = {
+                        enable = true,
+                        command = "clippy"
+                    }
+                }
+            }
+        }
+    }
+end)
+
+-- CHANGED --
+lvim.builtin.dap.on_config_done = function(dap)
+    dap.adapters.codelldb = codelldb_adapter
+    dap.configurations.rust = {
+        {
+            name = "Launch file",
+            type = "codelldb",
+            request = "launch",
+            program = function()
+                return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
+            end,
+            cwd = "${workspaceFolder}",
+            stopOnEntry = false,
+        },
+    }
+end
+
+vim.api.nvim_set_keymap("n", "<m-d>", "<cmd>RustOpenExternalDocs<Cr>", { noremap = true, silent = true })
+
+lvim.builtin.which_key.mappings["R"] = {
+    name = "Rust",
+    r = { "<cmd>RustRunnables<Cr>", "Runnables" },
+    t = { "<cmd>lua _CARGO_TEST()<cr>", "Cargo Test" },
+    m = { "<cmd>RustExpandMacro<Cr>", "Expand Macro" },
+    c = { "<cmd>RustOpenCargo<Cr>", "Open Cargo" },
+    p = { "<cmd>RustParentModule<Cr>", "Parent Module" },
+    d = { "<cmd>RustDebuggables<Cr>", "Debuggables" },
+    v = { "<cmd>RustViewCrateGraph<Cr>", "View Crate Graph" },
+    R = {
+        "<cmd>lua require('rust-tools/workspace_refresh')._reload_workspace_from_cargo_toml()<Cr>",
+        "Reload Workspace",
+    },
+    o = { "<cmd>RustOpenExternalDocs<Cr>", "Open External Docs" }
+}
+
 lvim.transparent_window = true
 vim.opt.relativenumber = true
 
 lvim.builtin.which_key.mappings["t"] = {
-  name = "Diagnostics",
-  t = { "<cmd>TroubleToggle<cr>", "trouble" },
-  w = { "<cmd>TroubleToggle workspace_diagnostics<cr>", "workspace" },
-  d = { "<cmd>TroubleToggle document_diagnostics<cr>", "document" },
-  q = { "<cmd>TroubleToggle quickfix<cr>", "quickfix" },
-  l = { "<cmd>TroubleToggle loclist<cr>", "loclist" },
-  r = { "<cmd>TroubleToggle lsp_references<cr>", "references" },
+    name = "Diagnostics",
+    t = { "<cmd>TroubleToggle<cr>", "trouble" },
+    w = { "<cmd>TroubleToggle workspace_diagnostics<cr>", "workspace" },
+    d = { "<cmd>TroubleToggle document_diagnostics<cr>", "document" },
+    q = { "<cmd>TroubleToggle quickfix<cr>", "quickfix" },
+    l = { "<cmd>TroubleToggle loclist<cr>", "loclist" },
+    r = { "<cmd>TroubleToggle lsp_references<cr>", "references" },
 }
 
 local util = require("lspconfig/util")
 require("lspconfig").hls.setup {
-  root_dir = function(filepath)
-    return 
-        util.root_pattern('hie.yaml', 'stack.yaml', 'cabal.project', "*.cabal", "package.yaml")(filepath)
+    root_dir = function(filepath)
+        return util.root_pattern('hie.yaml', 'stack.yaml', 'cabal.project', "*.cabal", "package.yaml")(filepath)
             or util.path.dirname(filepath)
-  end
+    end
 }
 
 -- Tab size
 vim.bo.tabstop = 4
 vim.bo.shiftwidth = 4
 vim.bo.softtabstop = 4
+
+-- Disable mouse
+-- vim.opt.mouse = ""
