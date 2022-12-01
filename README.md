@@ -4,13 +4,13 @@
          -/oyddmdhs+:.                stephen@Stephen-PC
      -odNMMMMMMMMNNmhy+-`             ------------------
    -yNMMMMMMMMMMMNNNmmdhy+-           OS: Gentoo Linux on Windows 10 x86_64
- `omMMMMMMMMMMMMNmdmmmmddhhy/`        Kernel: 5.15.68.1-microsoft-standard-WSL2
- omMMMMMMMMMMMNhhyyyohmdddhhhdo`      Uptime: 6 hours, 58 mins
-.ydMMMMMMMMMMdhs++so/smdddhhhhdm+`    Packages: 338 (emerge)
+ `omMMMMMMMMMMMMNmdmmmmddhhy/`        Kernel: 5.15.74.2-microsoft-standard-WSL2
+ omMMMMMMMMMMMNhhyyyohmdddhhhdo`      Uptime: 7 mins
+.ydMMMMMMMMMMdhs++so/smdddhhhhdm+`    Packages: 342 (emerge)
  oyhdmNMMMMMMMNdyooydmddddhhhhyhNd.   Shell: zsh 5.9
   :oyhhdNNMMMMMMMNNNmmdddhhhhhyymMh   Terminal: Windows Terminal
     .:+sydNMMMMMNNNmmmdddhhhhhhmMmy   CPU: Intel i7-7700K (8) @ 4.199GHz
-       /mMMMMMMNNNmmmdddhhhhhmMNhs:   Memory: 403MiB / 15963MiB
+       /mMMMMMMNNNmmmdddhhhhhmMNhs:   Memory: 342MiB / 15963MiB
     `oNMMMMMMMNNNmmmddddhhdmMNhs+`
   `sNMMMMMMMMNNNmmmdddddmNMmhs/.
  /NMMMMMMMMNNNNmmmdddmNMNdso:`
